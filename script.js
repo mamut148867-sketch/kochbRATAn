@@ -101,7 +101,6 @@
     removeFromCart(Number(btn.dataset.id));
   });
 
-  // Drawer open/close
   const overlay = document.getElementById('overlay');
   const drawer = document.getElementById('drawer');
   function openDrawer(){ overlay.classList.add('open'); drawer.classList.add('open'); }
@@ -119,7 +118,6 @@
     setTimeout(closeDrawer, 900);
   });
 
-  // Newsletter (demo, no backend)
   document.getElementById('newsForm').addEventListener('submit', (e) => {
     e.preventDefault();
     showToast('Готово — ты в списке');
