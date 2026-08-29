@@ -10,12 +10,12 @@
     { id:8, name:'MONO HOODIE', cat:'hoodie', tag:null, mono:'H', price:2500 },
     { id:9, name:'GRID CAP', cat:'acc', tag:'Новинка', mono:'G', price:850 },
   ];
-
+ 
   const grid = document.getElementById('grid');
   const filters = document.getElementById('filters');
   let activeCat = 'all';
   let cart = []; // in-memory only
-
+ 
   function renderGrid(){
     const list = activeCat === 'all' ? products : products.filter(p => p.cat === activeCat);
     grid.innerHTML = list.map(p => `
@@ -36,11 +36,11 @@
       </article>
     `).join('');
   }
-
+ 
   function catLabel(cat){
     return { hoodie:'Худи', tee:'Футболка', pants:'Брюки', outerwear:'Верхняя одежда', acc:'Аксессуар' }[cat] || cat;
   }
-
+ 
   filters.addEventListener('click', (e) => {
     const btn = e.target.closest('.filter-btn');
     if(!btn) return;
@@ -49,7 +49,7 @@
     activeCat = btn.dataset.cat;
     renderGrid();
   });
-
+ 
   grid.addEventListener('click', (e) => {
     const btn = e.target.closest('.add-btn');
     if(!btn) return;
@@ -57,7 +57,7 @@
     const product = products.find(p => p.id === id);
     addToCart(product);
   });
-
+ 
   function addToCart(product){
     const existing = cart.find(i => i.id === product.id);
     if(existing){ existing.qty += 1; }
@@ -65,16 +65,16 @@
     updateCartUI();
     showToast(`${product.name} — добавлено`);
   }
-
+ 
   function removeFromCart(id){
     cart = cart.filter(i => i.id !== id);
     updateCartUI();
   }
-
+ 
   function updateCartUI(){
     const count = cart.reduce((s,i) => s + i.qty, 0);
     document.getElementById('cartCount').textContent = count;
-
+ 
     const itemsEl = document.getElementById('drawerItems');
     if(cart.length === 0){
       itemsEl.innerHTML = `<div class="drawer__empty">Корзина пуста.<br>Выбери что-нибудь из каталога.</div>`;
@@ -90,17 +90,18 @@
         </div>
       `).join('');
     }
-
+ 
     const total = cart.reduce((s,i) => s + i.qty * i.price, 0);
     document.getElementById('drawerTotal').textContent = total + ' ₴';
   }
-
+ 
   document.getElementById('drawerItems').addEventListener('click', (e) => {
     const btn = e.target.closest('.drawer__remove');
     if(!btn) return;
     removeFromCart(Number(btn.dataset.id));
   });
-
+ 
+  // Drawer open/close
   const overlay = document.getElementById('overlay');
   const drawer = document.getElementById('drawer');
   function openDrawer(){ overlay.classList.add('open'); drawer.classList.add('open'); }
@@ -109,7 +110,7 @@
   document.getElementById('drawerClose').addEventListener('click', closeDrawer);
   overlay.addEventListener('click', closeDrawer);
   document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeDrawer(); });
-
+ 
   document.getElementById('checkoutBtn').addEventListener('click', () => {
     if(cart.length === 0){ showToast('Корзина пуста'); return; }
     showToast('Заказ оформлен. Мы на связи.');
@@ -117,13 +118,14 @@
     updateCartUI();
     setTimeout(closeDrawer, 900);
   });
-
+ 
+  // Newsletter (demo, no backend)
   document.getElementById('newsForm').addEventListener('submit', (e) => {
     e.preventDefault();
     showToast('Готово — ты в списке');
     e.target.reset();
   });
-
+ 
   let toastTimer;
   function showToast(msg){
     const t = document.getElementById('toast');
@@ -132,7 +134,7 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
   }
-
+ 
   renderGrid();
   updateCartUI();
 })();
