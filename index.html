@@ -1,864 +1,201 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>kochBRATAN — Street Store</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --black:#0a0a0a;
-  --white:#f2f2ef;
-  --g1:#1c1c1c;
-  --g2:#2b2b2b;
-  --g3:#8a8a84;
-  --line:#3d3d3a;
-  --display: 'Anton', sans-serif;
-  --mono: 'Space Mono', monospace;
-}
-*{box-sizing:border-box; margin:0; padding:0;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--black);
-  color:var(--white);
-  font-family:var(--mono);
-  overflow-x:hidden;
-  position:relative;
-}
-body::before{
-  content:"";
-  position:fixed; inset:0;
-  pointer-events:none;
-  z-index:500;
-  opacity:.05;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode:overlay;
-}
-@media (prefers-reduced-motion: reduce){
-  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; scroll-behavior:auto !important;}
-}
-a{color:inherit; text-decoration:none;}
-ul{list-style:none;}
-button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
-img{max-width:100%; display:block;}
-
-.marquee{
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  overflow:hidden;
-  white-space:nowrap;
-  background:var(--white);
-  color:var(--black);
-  padding:9px 0;
-}
-.marquee--dark{ background:var(--black); color:var(--white); }
-.marquee__track{
-  display:inline-block;
-  padding-left:100%;
-  animation:scrollLeft 22s linear infinite;
-  font-family:var(--display);
-  letter-spacing:.04em;
-  font-size:15px;
-  text-transform:uppercase;
-}
-.marquee__track span{ padding:0 22px; }
-@keyframes scrollLeft{
-  0%{ transform:translateX(0); }
-  100%{ transform:translateX(-100%); }
-}
-
-header{
-  position:sticky; top:0; z-index:100;
-  background:rgba(10,10,10,.88);
-  backdrop-filter:blur(6px);
-  border-bottom:1px solid var(--line);
-}
-.nav{
-  max-width:1320px; margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:20px 28px;
-}
-.logo{
-  font-family:var(--display);
-  font-size:26px;
-  letter-spacing:.02em;
-  text-transform:uppercase;
-}
-.logo span{ color:var(--g3); }
-.nav__links{ display:flex; gap:34px; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; }
-.nav__links a{ position:relative; padding-bottom:4px; }
-.nav__links a::after{
-  content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--white);
-  transition:width .25s ease;
-}
-.nav__links a:hover::after{ width:100%; }
-.nav__right{ display:flex; align-items:center; gap:22px; }
-.cart-btn{
-  display:flex; align-items:center; gap:8px;
-  border:1px solid var(--white);
-  padding:8px 14px;
-  font-size:12px; letter-spacing:.1em; text-transform:uppercase;
-  transition:background .2s, color .2s;
-}
-.cart-btn:hover{ background:var(--white); color:var(--black); }
-.cart-count{ font-family:var(--display); }
-
-.hero{
-  max-width:1320px; margin:0 auto;
-  padding:90px 28px 60px;
-}
-.hero__eyebrow{
-  font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--g3);
-  display:flex; align-items:center; gap:12px; margin-bottom:22px;
-}
-.hero__eyebrow::before{ content:""; width:34px; height:1px; background:var(--g3); }
-.hero__title{
-  font-family:var(--display);
-  text-transform:uppercase;
-  line-height:.86;
-  font-size:clamp(52px, 10vw, 148px);
-  letter-spacing:-.01em;
-}
-.hero__title .outline{
-  -webkit-text-stroke:1.5px var(--white);
-  color:transparent;
-}
-.hero__row{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; margin-top:34px; flex-wrap:wrap; }
-.hero__desc{ max-width:420px; color:var(--g3); font-size:14px; line-height:1.7; }
-.hero__cta{
-  display:inline-flex; align-items:center; gap:14px;
-  background:var(--white); color:var(--black);
-  padding:16px 30px;
-  font-family:var(--display); text-transform:uppercase; font-size:15px; letter-spacing:.03em;
-  transition:transform .2s ease;
-  white-space:nowrap;
-}
-.hero__cta:hover{ transform:translate(-3px,-3px); box-shadow:6px 6px 0 var(--line); }
-.hero__strip{
-  margin-top:60px;
-  display:grid; grid-template-columns:repeat(4,1fr);
-  border-top:1px solid var(--line);
-}
-.hero__strip div{
-  padding:16px 6px 0;
-  font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--g3);
-  border-left:1px solid var(--line);
-}
-.hero__strip div:first-child{ border-left:none; }
-.hero__strip b{ display:block; color:var(--white); font-family:var(--display); font-size:22px; letter-spacing:0; margin-top:4px; }
-
-.section{ max-width:1320px; margin:0 auto; padding:80px 28px; }
-.section__head{
-  display:flex; justify-content:space-between; align-items:flex-end; gap:20px;
-  margin-bottom:44px; flex-wrap:wrap;
-  border-bottom:1px solid var(--line); padding-bottom:22px;
-}
-.section__title{
-  font-family:var(--display); text-transform:uppercase;
-  font-size:clamp(30px,4vw,50px); line-height:1;
-}
-.section__sub{ color:var(--g3); font-size:12.5px; letter-spacing:.05em; max-width:280px; text-align:right; }
-
-.filters{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:40px; }
-.filter-btn{
-  border:1px solid var(--line);
-  padding:9px 18px;
-  font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--g3);
-  transition:.2s;
-}
-.filter-btn:hover{ color:var(--white); border-color:var(--white); }
-.filter-btn.active{ background:var(--white); color:var(--black); border-color:var(--white); }
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:1px;
-  background:var(--line);
-  border:1px solid var(--line);
-}
-.card{
-  background:var(--black);
-  padding:0;
-  position:relative;
-  display:flex; flex-direction:column;
-  transition:background .35s ease, color .35s ease;
-}
-.card:hover{ background:var(--white); color:var(--black); }
-.card__tag{
-  position:absolute; top:14px; left:14px;
-  font-size:10px; letter-spacing:.12em; text-transform:uppercase;
-  background:var(--white); color:var(--black);
-  padding:4px 9px; z-index:2;
-}
-.card:hover .card__tag{ background:var(--black); color:var(--white); }
-.card__visual{
-  aspect-ratio:4/5;
-  position:relative;
-  overflow:hidden;
-  display:flex; align-items:center; justify-content:center;
-  border-bottom:1px solid var(--line);
-  background:var(--g1);
-}
-.card:hover .card__visual{ border-color:var(--g2); }
-.card__img{
-  width:100%; height:100%;
-  object-fit:cover; object-position:center;
-  transition:transform .4s ease;
-}
-.card:hover .card__img{ transform:scale(1.04); }
-.card__mono{
-  font-family:var(--display);
-  font-size:15vw;
-  line-height:1;
-  color:var(--g2);
-  transition:color .35s ease;
-  user-select:none;
-}
-.card:hover .card__mono{ color:var(--white); mix-blend-mode:difference; }
-.card__visual .stripes{
-  position:absolute; inset:0;
-  background:repeating-linear-gradient(115deg, transparent 0 18px, rgba(255,255,255,.05) 18px 19px);
-  pointer-events:none; z-index:1;
-}
-.card__body{ padding:18px 18px 22px; display:flex; flex-direction:column; gap:10px; flex:1; }
-.card__name{ font-family:var(--display); font-size:19px; text-transform:uppercase; letter-spacing:.01em; }
-.card__meta{ font-size:11px; letter-spacing:.06em; color:var(--g3); text-transform:uppercase; }
-.card:hover .card__meta{ color:#555; }
-.card__foot{ display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:8px; }
-.card__price{ font-family:var(--display); font-size:20px; }
-.add-btn{
-  border:1px solid currentColor;
-  padding:9px 14px;
-  font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
-  transition:.2s;
-}
-.card:hover .add-btn:hover{ background:var(--black); color:var(--white); }
-.card:not(:hover) .add-btn:hover{ background:var(--white); color:var(--black); }
-
-.story{
-  display:grid; grid-template-columns:1.1fr .9fr; gap:70px; align-items:center;
-}
-.story__visual{
-  aspect-ratio:3/4; background:var(--g1); border:1px solid var(--line);
-  position:relative; overflow:hidden;
-  display:flex; align-items:flex-end;
-}
-.story__visual::before{
-  content:"BRATAN"; position:absolute; top:20px; left:20px;
-  font-family:var(--display); font-size:13vw; color:var(--g2); line-height:.8;
-}
-.story__visual::after{
-  content:"04 / SS26"; position:relative; z-index:1;
-  font-size:11px; letter-spacing:.1em; padding:20px; color:var(--g3);
-}
-.story__quote{
-  font-family:var(--display); text-transform:uppercase;
-  font-size:clamp(24px,2.6vw,34px); line-height:1.25; margin-bottom:26px;
-}
-.story p.body-text{ color:var(--g3); font-size:14px; line-height:1.8; max-width:460px; margin-bottom:26px; }
-.story__signature{ font-size:11px; letter-spacing:.15em; text-transform:uppercase; }
-.story__signature b{ color:var(--white); display:block; font-family:var(--display); font-size:16px; letter-spacing:0; margin-bottom:4px; }
-
-.news{
-  background:var(--white); color:var(--black);
-  padding:70px 28px;
-}
-.news__inner{
-  max-width:1320px; margin:0 auto;
-  display:flex; justify-content:space-between; align-items:center; gap:40px; flex-wrap:wrap;
-}
-.news__title{ font-family:var(--display); text-transform:uppercase; font-size:clamp(30px,4vw,52px); line-height:.95; max-width:600px; }
-.news__form{ display:flex; gap:0; min-width:320px; flex:1; max-width:420px; }
-.news__form input{
-  flex:1; background:transparent; border:none; border-bottom:2px solid var(--black);
-  font-family:var(--mono); font-size:14px; padding:12px 6px; color:var(--black); outline:none;
-}
-.news__form input::placeholder{ color:#555; }
-.news__form button{
-  background:var(--black); color:var(--white);
-  padding:0 22px;
-  font-family:var(--display); text-transform:uppercase; font-size:13px;
-}
-.news__note{ font-size:11px; margin-top:10px; color:#555; }
-
-footer{ padding:60px 28px 30px; max-width:1320px; margin:0 auto; }
-.foot__grid{
-  display:grid; grid-template-columns:1.4fr repeat(3, .8fr); gap:40px;
-  padding-bottom:40px; border-bottom:1px solid var(--line);
-}
-.foot__logo{ font-family:var(--display); font-size:28px; text-transform:uppercase; margin-bottom:14px; }
-.foot__logo span{ color:var(--g3); }
-.foot__desc{ color:var(--g3); font-size:13px; max-width:280px; line-height:1.7; }
-.foot__head{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--g3); margin-bottom:16px; }
-.foot__links li{ margin-bottom:10px; font-size:13px; }
-.foot__links a:hover{ color:var(--g3); }
-.foot__bottom{
-  display:flex; justify-content:space-between; padding-top:26px;
-  font-size:11px; color:var(--g3); letter-spacing:.05em; flex-wrap:wrap; gap:10px;
-}
-
-.overlay{
-  position:fixed; inset:0; background:rgba(0,0,0,.6);
-  opacity:0; pointer-events:none; transition:opacity .3s ease; z-index:200;
-}
-.overlay.open{ opacity:1; pointer-events:auto; }
-.drawer{
-  position:fixed; top:0; right:0; height:100%; width:min(420px, 92vw);
-  background:var(--black); border-left:1px solid var(--line);
-  transform:translateX(100%); transition:transform .35s cubic-bezier(.7,0,.2,1);
-  z-index:201; display:flex; flex-direction:column;
-}
-.drawer.open{ transform:translateX(0); }
-.drawer__head{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:24px; border-bottom:1px solid var(--line);
-  font-family:var(--display); text-transform:uppercase; font-size:20px;
-}
-.drawer__close{ font-size:24px; }
-.drawer__items{ flex:1; overflow-y:auto; padding:10px 24px; }
-.drawer__item{
-  display:flex; gap:14px; align-items:center; padding:16px 0; border-bottom:1px solid var(--line);
-}
-.drawer__thumb{
-  width:56px; height:66px; background:var(--g1); flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--display); font-size:24px; color:var(--g3);
-  overflow:hidden;
-}
-.drawer__img{ width:100%; height:100%; object-fit:cover; }
-.drawer__info{ flex:1; }
-.drawer__info .name{ font-family:var(--display); text-transform:uppercase; font-size:14px; }
-.drawer__info .price{ font-size:12px; color:var(--g3); margin-top:4px; }
-.drawer__remove{ font-size:11px; text-decoration:underline; color:var(--g3); }
-.drawer__remove:hover{ color:var(--white); }
-.drawer__empty{ color:var(--g3); font-size:13px; padding:40px 0; text-align:center; }
-.drawer__foot{ padding:24px; border-top:1px solid var(--line); }
-.drawer__total{ display:flex; justify-content:space-between; font-family:var(--display); font-size:20px; text-transform:uppercase; margin-bottom:16px; }
-.drawer__checkout{
-  width:100%; background:var(--white); color:var(--black);
-  padding:16px; font-family:var(--display); text-transform:uppercase; font-size:15px;
-}
-.toast{
-  position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
-  background:var(--white); color:var(--black);
-  padding:12px 22px; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
-  font-family:var(--display);
-  opacity:0; transition:.3s ease; z-index:300; pointer-events:none;
-}
-.toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-
-.admin-open-btn{
-  position:fixed; bottom:24px; right:24px; z-index:150;
-  background:var(--white); color:var(--black);
-  padding:12px 18px;
-  font-family:var(--display); font-size:13px;
-  text-transform:uppercase; letter-spacing:.05em;
-  box-shadow:4px 4px 0 var(--line);
-  transition:transform .15s;
-}
-.admin-open-btn:hover{ transform:translate(-2px,-2px); }
-#adminPanel{
-  position:fixed; inset:0; z-index:400;
-  pointer-events:none; opacity:0; transition:opacity .3s;
-}
-#adminPanel.open{ pointer-events:auto; opacity:1; }
-.admin-overlay{ position:absolute; inset:0; background:rgba(0,0,0,.7); }
-.admin-drawer{
-  position:absolute; top:0; right:0; height:100%; width:min(480px,96vw);
-  background:var(--black); border-left:1px solid var(--line);
-  display:flex; flex-direction:column;
-  transform:translateX(100%); transition:transform .35s cubic-bezier(.7,0,.2,1);
-}
-#adminPanel.open .admin-drawer{ transform:translateX(0); }
-.admin-head{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:22px 24px; border-bottom:1px solid var(--line);
-  font-family:var(--display); text-transform:uppercase; font-size:18px;
-}
-.admin-head button{ font-size:26px; line-height:1; color:var(--g3); }
-.admin-head button:hover{ color:var(--white); }
-.admin-body{ flex:1; overflow-y:auto; padding:24px; }
-.admin-form h3, .admin-list-wrap h3{
-  font-family:var(--display); text-transform:uppercase; font-size:16px;
-  margin-bottom:18px; letter-spacing:.03em;
-}
-.admin-form label{
-  display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--g3); margin-bottom:6px; margin-top:14px;
-}
-.admin-form input, .admin-form select{
-  width:100%; background:var(--g1); border:1px solid var(--line);
-  color:var(--white); font-family:var(--mono); font-size:14px;
-  padding:11px 12px; outline:none;
-}
-.admin-form input:focus, .admin-form select:focus{ border-color:var(--white); }
-.admin-btn{
-  width:100%; margin-top:22px; background:var(--white); color:var(--black);
-  padding:14px; font-family:var(--display); text-transform:uppercase;
-  font-size:14px; letter-spacing:.04em;
-}
-.admin-btn:hover{ opacity:.9; }
-.admin-list-wrap{ margin-top:40px; border-top:1px solid var(--line); padding-top:28px; }
-.admin-list{ display:flex; flex-direction:column; gap:8px; }
-.admin-item{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:12px 14px; background:var(--g1); border:1px solid var(--line);
-}
-.admin-item__info strong{
-  display:block; font-family:var(--display); text-transform:uppercase;
-  font-size:14px; margin-bottom:3px;
-}
-.admin-item__info span{ font-size:11px; color:var(--g3); }
-.admin-delete{
-  width:32px; height:32px; display:flex; align-items:center; justify-content:center;
-  font-size:20px; color:var(--g3); border:1px solid var(--line); transition:.2s;
-}
-.admin-delete:hover{ background:#ff3b3b; color:white; border-color:#ff3b3b; }
-.admin-empty{ color:var(--g3); font-size:13px; text-align:center; padding:20px 0; }
-
-@media (max-width:900px){
-  .nav__links{ display:none; }
-  .story{ grid-template-columns:1fr; }
-  .hero__strip{ grid-template-columns:repeat(2,1fr); }
-  .hero__strip div:nth-child(3){ border-left:none; }
-  .foot__grid{ grid-template-columns:1fr 1fr; }
-}
-@media (max-width:640px){
-  .grid{ grid-template-columns:1fr; }
-  .section__sub{ text-align:left; }
-  .foot__grid{ grid-template-columns:1fr; }
-  .news__inner{ flex-direction:column; align-items:flex-start; }
-}
-:focus-visible{ outline:2px solid var(--white); outline-offset:2px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kochBRATAN — Street Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="marquee">
-  <div class="marquee__track">
-    <span>★ НОВЫЙ ДРОП — SS26</span>
-    <span>★ ЛИМИТИРОВАННЫЙ ТИРАЖ</span>
-    <span>★ ДОСТАВКА ПО ВСЕЙ УКРАИНЕ</span>
-    <span>★ БЕЗ ЦВЕТА. ТОЛЬКО ФОРМА.</span>
-    <span>★ НОВЫЙ ДРОП — SS26</span>
-    <span>★ ЛИМИТИРОВАННЫЙ ТИРАЖ</span>
-    <span>★ ДОСТАВКА ПО ВСЕЙ УКРАИНЕ</span>
-    <span>★ БЕЗ ЦВЕТА. ТОЛЬКО ФОРМА.</span>
-  </div>
-</div>
-
-<header>
-  <nav class="nav">
-    <div class="logo">koch<span>/</span>BRATAN</div>
-    <ul class="nav__links">
-      <li><a href="#catalog">Каталог</a></li>
-      <li><a href="#story">О бренде</a></li>
-      <li><a href="#drops">Дропы</a></li>
-      <li><a href="#contacts">Контакты</a></li>
-    </ul>
-    <div class="nav__right">
-      <button class="cart-btn" id="cartOpenBtn">
-        Корзина <span class="cart-count" id="cartCount">0</span>
-      </button>
-    </div>
-  </nav>
-</header>
-
-<section class="hero">
-  <div class="hero__eyebrow">Street collection / чёрно-белый выпуск</div>
-  <h1 class="hero__title">УЛИЦА<br>ДИКТУЕТ<br><span class="outline">ФОРМУ</span></h1>
-  <div class="hero__row">
-    <p class="hero__desc">Одежда без полутонов. Тяжёлый хлопок, крупный крой, графика на грани контраста. Только чёрный. Только белый. Только то, что реально носят.</p>
-    <a href="#catalog" class="hero__cta">Смотреть каталог →</a>
-  </div>
-  <div class="hero__strip">
-    <div>Плотность ткани<b>340 г/м²</b></div>
-    <div>Активный дроп<b>SS / 26</b></div>
-    <div>Тираж модели<b>200 шт</b></div>
-    <div>Доставка<b>1–3 дня</b></div>
-  </div>
-</section>
-
-<div class="marquee marquee--dark">
-  <div class="marquee__track" style="animation-direction:reverse;">
-    <span>HOODIES</span><span>—</span><span>TEES</span><span>—</span><span>CARGO</span><span>—</span><span>OUTERWEAR</span><span>—</span>
-    <span>HOODIES</span><span>—</span><span>TEES</span><span>—</span><span>CARGO</span><span>—</span><span>OUTERWEAR</span><span>—</span>
-  </div>
-</div>
-
-<section class="section" id="catalog">
-  <div class="section__head">
-    <h2 class="section__title">Каталог</h2>
-    <p class="section__sub">Каждая вещь — часть одной палитры. Наведи курсор — цвет карточки инвертируется, как и всё, во что мы верим.</p>
-  </div>
-  <div class="filters" id="filters">
-    <button class="filter-btn active" data-cat="all">Все</button>
-    <button class="filter-btn" data-cat="hoodie">Худи</button>
-    <button class="filter-btn" data-cat="tee">Футболки</button>
-    <button class="filter-btn" data-cat="outerwear">Верхняя одежда</button>
-    <button class="filter-btn" data-cat="pants">Брюки</button>
-    <button class="filter-btn" data-cat="acc">Аксессуары</button>
-  </div>
-  <div class="grid" id="grid"></div>
-</section>
-
-<section class="section" id="story">
-  <div class="story">
-    <div class="story__visual"></div>
-    <div>
-      <p class="story__quote">«Мы не продаём цвет. Мы продаём то, что остаётся, когда его убрать»</p>
-      <p class="body-text">kochBRATAN родился на бетоне, а не на подиуме. Каждая вещь проходит один и тот же тест: работает ли крой без единого цвета, кроме чёрного и белого. Если да — она попадает в дроп. Если нет — остаётся эскизом.</p>
-      <div class="story__signature"><b>Основано в 2019</b>Независимый бренд · собственное производство</div>
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee__track">
+      <span>★ НОВЫЙ ДРОП — SS26</span>
+      <span>★ ЛИМИТИРОВАННЫЙ ТИРАЖ</span>
+      <span>★ ДОСТАВКА ПО ВСЕЙ УКРАИНЕ</span>
+      <span>★ БЕЗ ЦВЕТА. ТОЛЬКО ФОРМА.</span>
+      <span>★ НОВЫЙ ДРОП — SS26</span>
+      <span>★ ЛИМИТИРОВАННЫЙ ТИРАЖ</span>
+      <span>★ ДОСТАВКА ПО ВСЕЙ УКРАИНЕ</span>
+      <span>★ БЕЗ ЦВЕТА. ТОЛЬКО ФОРМА.</span>
     </div>
   </div>
-</section>
 
-<section class="news" id="drops">
-  <div class="news__inner">
-    <h3 class="news__title">Узнавай о дропах первым</h3>
-    <div>
-      <form class="news__form" id="newsForm">
-        <input type="email" placeholder="your@email.com" required>
-        <button type="submit">Подписаться</button>
-      </form>
-      <p class="news__note">Никакого спама. Только даты дропов и ранний доступ.</p>
-    </div>
-  </div>
-</section>
-
-<footer id="contacts">
-  <div class="foot__grid">
-    <div>
-      <div class="foot__logo">koch<span>/</span>BRATAN</div>
-      <p class="foot__desc">Уличная одежда в чёрно-белой палитре. Киев — и далее по всей Украине.</p>
-    </div>
-    <div>
-      <div class="foot__head">Магазин</div>
-      <ul class="foot__links">
+  <!-- HEADER -->
+  <header>
+    <nav class="nav">
+      <div class="logo">koch<span>/</span>BRATAN</div>
+      <ul class="nav__links">
         <li><a href="#catalog">Каталог</a></li>
+        <li><a href="#story">О бренде</a></li>
         <li><a href="#drops">Дропы</a></li>
-        <li><a href="#">Размерная сетка</a></li>
+        <li><a href="#contacts">Контакты</a></li>
       </ul>
+      <div class="nav__right">
+        <button class="cart-btn" id="cartOpenBtn" aria-haspopup="dialog">
+          Корзина <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__eyebrow">Street collection / чёрно-белый выпуск</div>
+    <h1 class="hero__title">
+      УЛИЦА<br>
+      ДИКТУЕТ<br>
+      <span class="outline">ФОРМУ</span>
+    </h1>
+    <div class="hero__row">
+      <p class="hero__desc">
+        Одежда без полутонов. Тяжёлый хлопок, крупный крой, графика на грани контраста.
+        Только чёрный. Только белый. Только то, что реально носят.
+      </p>
+      <a href="#catalog" class="hero__cta">Смотреть каталог →</a>
     </div>
-    <div>
-      <div class="foot__head">Бренд</div>
-      <ul class="foot__links">
-        <li><a href="#story">О нас</a></li>
-        <li><a href="#">Лукбук</a></li>
-        <li><a href="#">Вакансии</a></li>
-      </ul>
+    <div class="hero__strip">
+      <div>Плотность ткани<b>340 г/м²</b></div>
+      <div>Активный дроп<b>SS / 26</b></div>
+      <div>Тираж модели<b>200 шт</b></div>
+      <div>Доставка<b>1–3 дня</b></div>
     </div>
-    <div>
-      <div class="foot__head">Контакты</div>
-      <ul class="foot__links">
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Telegram</a></li>
-        <li><a href="mailto:hello@kochbratan.ua">hello@kochbratan.ua</a></li>
-      </ul>
+  </section>
+
+  <!-- SECOND MARQUEE -->
+  <div class="marquee marquee--dark">
+    <div class="marquee__track" style="animation-direction:reverse;">
+      <span>HOODIES</span><span>—</span>
+      <span>TEES</span><span>—</span>
+      <span>CARGO</span><span>—</span>
+      <span>OUTERWEAR</span><span>—</span>
+      <span>HOODIES</span><span>—</span>
+      <span>TEES</span><span>—</span>
+      <span>CARGO</span><span>—</span>
+      <span>OUTERWEAR</span><span>—</span>
     </div>
   </div>
-  <div class="foot__bottom">
-    <span>© 2026 kochBRATAN. Все права защищены.</span>
-    <span>Сделано на бетоне, не в офисе.</span>
+
+  <!-- CATALOG -->
+  <section class="section" id="catalog">
+    <div class="section__head">
+      <h2 class="section__title">Каталог</h2>
+      <p class="section__sub">
+        Каждая вещь — часть одной палитры. Наведи курсор — цвет карточки инвертируется,
+        как и всё, во что мы верим.
+      </p>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-cat="all">Все</button>
+      <button class="filter-btn" data-cat="hoodie">Худи</button>
+      <button class="filter-btn" data-cat="tee">Футболки</button>
+      <button class="filter-btn" data-cat="outerwear">Верхняя одежда</button>
+      <button class="filter-btn" data-cat="pants">Брюки</button>
+      <button class="filter-btn" data-cat="acc">Аксессуары</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- STORY -->
+  <section class="section" id="story">
+    <div class="story">
+      <div class="story__visual"></div>
+      <div>
+        <p class="story__quote">
+          «Мы не продаём цвет. Мы продаём то, что остаётся, когда его убрать»
+        </p>
+        <p class="body-text">
+          kochBRATAN родился на бетоне, а не на подиуме. Каждая вещь проходит один и тот же тест:
+          работает ли крой без единого цвета, кроме чёрного и белого. Если да — она попадает в дроп.
+          Если нет — остаётся эскизом.
+        </p>
+        <div class="story__signature">
+          <b>Основано в 2019</b>
+          Независимый бренд · собственное производство
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="news" id="drops">
+    <div class="news__inner">
+      <h3 class="news__title">Узнавай о дропах первым</h3>
+      <div>
+        <form class="news__form" id="newsForm">
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit">Подписаться</button>
+        </form>
+        <p class="news__note">Никакого спама. Только даты дропов и ранний доступ.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contacts">
+    <div class="foot__grid">
+      <div>
+        <div class="foot__logo">koch<span>/</span>BRATAN</div>
+        <p class="foot__desc">
+          Уличная одежда в чёрно-белой палитре. Киев — и далее по всей Украине.
+        </p>
+      </div>
+      <div>
+        <div class="foot__head">Магазин</div>
+        <ul class="foot__links">
+          <li><a href="#catalog">Каталог</a></li>
+          <li><a href="#drops">Дропы</a></li>
+          <li><a href="#">Размерная сетка</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot__head">Бренд</div>
+        <ul class="foot__links">
+          <li><a href="#story">О нас</a></li>
+          <li><a href="#">Лукбук</a></li>
+          <li><a href="#">Вакансии</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="foot__head">Контакты</div>
+        <ul class="foot__links">
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Telegram</a></li>
+          <li><a href="mailto:hello@kochbratan.ua">hello@kochbratan.ua</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 kochBRATAN. Все права защищены.</span>
+      <span>Сделано на бетоне, не в офисе.</span>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER -->
+  <div class="overlay" id="overlay"></div>
+  <div class="drawer" id="drawer" role="dialog" aria-label="Корзина">
+    <div class="drawer__head">
+      <span>Корзина</span>
+      <button class="drawer__close" id="drawerClose" aria-label="Закрыть">×</button>
+    </div>
+    <div class="drawer__items" id="drawerItems"></div>
+    <div class="drawer__foot">
+      <div class="drawer__total">
+        <span>Итого</span>
+        <span id="drawerTotal">0 ₴</span>
+      </div>
+      <button class="drawer__checkout" id="checkoutBtn">Оформить заказ</button>
+    </div>
   </div>
-</footer>
 
-<div class="overlay" id="overlay"></div>
-<div class="drawer" id="drawer">
-  <div class="drawer__head">
-    <span>Корзина</span>
-    <button class="drawer__close" id="drawerClose">×</button>
-  </div>
-  <div class="drawer__items" id="drawerItems"></div>
-  <div class="drawer__foot">
-    <div class="drawer__total"><span>Итого</span><span id="drawerTotal">0 ₴</span></div>
-    <button class="drawer__checkout" id="checkoutBtn">Оформить заказ</button>
-  </div>
-</div>
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
 
-<div class="toast" id="toast"></div>
-
-<script>
-(function(){
-  "use strict";
-
-  const defaultProducts = [
-    { id:1, name:"RAW HOODIE", cat:"hoodie", tag:"Бестселлер", mono:"H", price:2400, img:null },
-    { id:2, name:"CONCRETE TEE", cat:"tee", tag:"Новинка", mono:"T", price:1100, img:null },
-    { id:3, name:"STEEL CARGO", cat:"pants", tag:"Дроп 04", mono:"C", price:2900, img:null },
-    { id:4, name:"BLACKOUT PARKA", cat:"outerwear", tag:"Ограниченно", mono:"P", price:5200, img:null },
-    { id:5, name:"ASH BEANIE", cat:"acc", tag:null, mono:"B", price:650, img:null },
-    { id:6, name:"VOID TEE", cat:"tee", tag:"Новинка", mono:"T", price:1150, img:null },
-    { id:7, name:"FRAME JACKET", cat:"outerwear", tag:null, mono:"J", price:4600, img:null },
-    { id:8, name:"MONO HOODIE", cat:"hoodie", tag:null, mono:"H", price:2500, img:null },
-    { id:9, name:"GRID CAP", cat:"acc", tag:"Новинка", mono:"G", price:850, img:null },
-    { id:10, name:"SUPREME CHERRY JACKET", cat:"outerwear", tag:"Лимит", mono:"S", price:6800, img:"products/supreme-jacket.jpg" },
-    { id:11, name:"TNF FLEECE JACKET", cat:"outerwear", tag:"Новинка", mono:"N", price:4200, img:"products/tnf-fleece.jpg" },
-    { id:12, name:"PALACE CREWNECK", cat:"hoodie", tag:"Коллаб", mono:"P", price:3900, img:"products/palace-crew.jpg" },
-    { id:13, name:"NIKE TN PLUS", cat:"acc", tag:"Релиз", mono:"T", price:4500, img:"products/nike-tn.jpg" },
-    { id:14, name:"SIXPM ZIP HOODIE", cat:"hoodie", tag:"Коллаб", mono:"6", price:5100, img:"products/sixpm-hoodie.jpg" },
-  ];
-
-  function loadProducts(){
-    try{
-      const saved = localStorage.getItem("koch_products");
-      if(saved) return JSON.parse(saved);
-    }catch(e){}
-    return [...defaultProducts];
-  }
-  function saveProducts(){
-    localStorage.setItem("koch_products", JSON.stringify(products));
-  }
-
-  let products = loadProducts();
-  let nextId = products.reduce((m,p)=>Math.max(m,p.id),0)+1;
-  let activeCat = "all";
-  let cart = [];
-
-  const grid = document.getElementById("grid");
-  const filters = document.getElementById("filters");
-  const cartCount = document.getElementById("cartCount");
-  const drawerItems = document.getElementById("drawerItems");
-  const drawerTotal = document.getElementById("drawerTotal");
-  const overlay = document.getElementById("overlay");
-  const drawer = document.getElementById("drawer");
-  const toastEl = document.getElementById("toast");
-
-  function catLabel(cat){
-    return {hoodie:"Худи",tee:"Футболка",pants:"Брюки",outerwear:"Верхняя одежда",acc:"Аксессуар"}[cat]||cat;
-  }
-  function formatPrice(n){ return Number(n).toLocaleString("uk-UA")+" ₴"; }
-
-  function renderGrid(){
-    const list = activeCat==="all" ? products : products.filter(p=>p.cat===activeCat);
-    if(list.length===0){
-      grid.innerHTML = '<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--g3)">Нет товаров в этой категории</div>';
-      return;
-    }
-    grid.innerHTML = list.map(p=>{
-      const visual = p.img
-        ? `<img src="${p.img}" alt="${p.name}" class="card__img" loading="lazy">`
-        : `<span class="card__mono">${p.mono||"?"}</span>`;
-      return `<article class="card">
-        ${p.tag?`<span class="card__tag">${p.tag}</span>`:""}
-        <div class="card__visual"><div class="stripes"></div>${visual}</div>
-        <div class="card__body">
-          <div class="card__name">${p.name}</div>
-          <div class="card__meta">${catLabel(p.cat)} · 100% хлопок</div>
-          <div class="card__foot">
-            <span class="card__price">${formatPrice(p.price)}</span>
-            <button class="add-btn" data-id="${p.id}">В корзину</button>
-          </div>
-        </div>
-      </article>`;
-    }).join("");
-  }
-
-  function addToCart(product){
-    const ex = cart.find(i=>i.id===product.id);
-    if(ex) ex.qty+=1; else cart.push({...product,qty:1});
-    updateCartUI();
-    showToast(product.name+" — добавлено");
-  }
-  function removeFromCart(id){
-    cart = cart.filter(i=>i.id!==id);
-    updateCartUI();
-  }
-  function updateCartUI(){
-    cartCount.textContent = cart.reduce((s,i)=>s+i.qty,0);
-    if(cart.length===0){
-      drawerItems.innerHTML = '<div class="drawer__empty">Корзина пуста.<br>Выбери что-нибудь из каталога.</div>';
-    } else {
-      drawerItems.innerHTML = cart.map(i=>{
-        const thumb = i.img ? `<img src="${i.img}" alt="${i.name}" class="drawer__img">` : (i.mono||"?");
-        return `<div class="drawer__item">
-          <div class="drawer__thumb">${thumb}</div>
-          <div class="drawer__info">
-            <div class="name">${i.name}</div>
-            <div class="price">${i.qty} × ${formatPrice(i.price)}</div>
-          </div>
-          <button class="drawer__remove" data-id="${i.id}">Убрать</button>
-        </div>`;
-      }).join("");
-    }
-    drawerTotal.textContent = formatPrice(cart.reduce((s,i)=>s+i.qty*i.price,0));
-  }
-
-  function openDrawer(){ overlay.classList.add("open"); drawer.classList.add("open"); }
-  function closeDrawer(){ overlay.classList.remove("open"); drawer.classList.remove("open"); }
-
-  let toastTimer;
-  function showToast(msg){
-    toastEl.textContent = msg;
-    toastEl.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>toastEl.classList.remove("show"),2200);
-  }
-
-  function createAdminPanel(){
-    const panel = document.createElement("div");
-    panel.id = "adminPanel";
-    panel.innerHTML = `
-      <div class="admin-overlay" id="adminOverlay"></div>
-      <div class="admin-drawer">
-        <div class="admin-head">
-          <span>Админ · Товары</span>
-          <button id="adminClose">×</button>
-        </div>
-        <div class="admin-body">
-          <form id="addProductForm" class="admin-form">
-            <h3>Добавить товар</h3>
-            <label>Название</label>
-            <input type="text" id="pName" placeholder="RAW HOODIE" required>
-            <label>Категория</label>
-            <select id="pCat" required>
-              <option value="hoodie">Худи</option>
-              <option value="tee">Футболка</option>
-              <option value="pants">Брюки</option>
-              <option value="outerwear">Верхняя одежда</option>
-              <option value="acc">Аксессуар</option>
-            </select>
-            <label>Цена (₴)</label>
-            <input type="number" id="pPrice" placeholder="2400" min="1" required>
-            <label>Тег (необязательно)</label>
-            <input type="text" id="pTag" placeholder="Новинка / Лимит / Коллаб">
-            <label>Буква (если нет фото)</label>
-            <input type="text" id="pMono" placeholder="H" maxlength="2">
-            <label>Ссылка на фото</label>
-            <input type="text" id="pImg" placeholder="products/файл.jpg или https://...">
-            <button type="submit" class="admin-btn">+ Добавить товар</button>
-          </form>
-          <div class="admin-list-wrap">
-            <h3>Все товары <span id="productCount"></span></h3>
-            <div id="adminList" class="admin-list"></div>
-          </div>
-        </div>
-      </div>`;
-    document.body.appendChild(panel);
-
-    document.getElementById("adminClose").onclick = closeAdmin;
-    document.getElementById("adminOverlay").onclick = closeAdmin;
-    document.getElementById("addProductForm").onsubmit = e=>{
-      e.preventDefault();
-      addProductFromForm();
-    };
-    renderAdminList();
-  }
-
-  function openAdmin(){
-    document.getElementById("adminPanel").classList.add("open");
-    renderAdminList();
-  }
-  function closeAdmin(){
-    document.getElementById("adminPanel").classList.remove("open");
-  }
-
-  function addProductFromForm(){
-    const name = document.getElementById("pName").value.trim();
-    const cat = document.getElementById("pCat").value;
-    const price = Number(document.getElementById("pPrice").value);
-    const tag = document.getElementById("pTag").value.trim() || null;
-    const mono = document.getElementById("pMono").value.trim() || (name?name[0].toUpperCase():"?");
-    const img = document.getElementById("pImg").value.trim() || null;
-    if(!name||!price){ showToast("Заполни название и цену"); return; }
-    products.push({id:nextId++, name, cat, tag, mono, price, img});
-    saveProducts();
-    renderGrid();
-    renderAdminList();
-    document.getElementById("addProductForm").reset();
-    showToast(name+" — добавлен");
-  }
-
-  function deleteProduct(id){
-    products = products.filter(p=>p.id!==id);
-    cart = cart.filter(i=>i.id!==id);
-    saveProducts();
-    renderGrid();
-    renderAdminList();
-    updateCartUI();
-    showToast("Товар удалён");
-  }
-
-  function renderAdminList(){
-    const listEl = document.getElementById("adminList");
-    const countEl = document.getElementById("productCount");
-    if(!listEl) return;
-    countEl.textContent = "("+products.length+")";
-    if(products.length===0){
-      listEl.innerHTML = '<p class="admin-empty">Товаров пока нет</p>';
-      return;
-    }
-    listEl.innerHTML = products.map(p=>`
-      <div class="admin-item">
-        <div class="admin-item__info">
-          <strong>${p.name}</strong>
-          <span>${catLabel(p.cat)} · ${formatPrice(p.price)}</span>
-        </div>
-        <button class="admin-delete" data-id="${p.id}">×</button>
-      </div>`).join("");
-  }
-
-  document.addEventListener("click", e=>{
-    const btn = e.target.closest(".admin-delete");
-    if(!btn) return;
-    if(confirm("Удалить этот товар?")) deleteProduct(Number(btn.dataset.id));
-  });
-
-  filters.addEventListener("click", e=>{
-    const btn = e.target.closest(".filter-btn");
-    if(!btn) return;
-    filters.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    activeCat = btn.dataset.cat;
-    renderGrid();
-  });
-
-  grid.addEventListener("click", e=>{
-    const btn = e.target.closest(".add-btn");
-    if(!btn) return;
-    const product = products.find(p=>p.id===Number(btn.dataset.id));
-    if(product) addToCart(product);
-  });
-
-  drawerItems.addEventListener("click", e=>{
-    const btn = e.target.closest(".drawer__remove");
-    if(btn) removeFromCart(Number(btn.dataset.id));
-  });
-
-  document.getElementById("cartOpenBtn").onclick = openDrawer;
-  document.getElementById("drawerClose").onclick = closeDrawer;
-  overlay.onclick = closeDrawer;
-
-  document.addEventListener("keydown", e=>{
-    if(e.key==="Escape"){ closeDrawer(); closeAdmin(); }
-  });
-
-  document.getElementById("checkoutBtn").onclick = ()=>{
-    if(cart.length===0){ showToast("Корзина пуста"); return; }
-    showToast("Заказ оформлен. Мы на связи.");
-    cart = [];
-    updateCartUI();
-    setTimeout(closeDrawer,900);
-  };
-
-  document.getElementById("newsForm").onsubmit = e=>{
-    e.preventDefault();
-    showToast("Готово — ты в списке");
-    e.target.reset();
-  };
-
-  const adminBtn = document.createElement("button");
-  adminBtn.className = "admin-open-btn";
-  adminBtn.textContent = "⚙ Админ";
-  adminBtn.onclick = openAdmin;
-  document.body.appendChild(adminBtn);
-
-  createAdminPanel();
-  renderGrid();
-  updateCartUI();
-})();
-</script>
+  <script src="app.js"></script>
 </body>
 </html>
