@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kochBRATAN — Street Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="marquee">
+  <div class="marquee__track">
+    <span>★ НОВЫЙ ДРОП — SS26</span>
+    <span>★ ЛИМИТИРОВАННЫЙ ТИРАЖ</span>
+    <span>★ ДОСТАВКА ПО ВСЕЙ УКРАИНЕ</span>
+    <span>★ БЕЗ ЦВЕТА. ТОЛЬКО ФОРМА.</span>
+    <span>★ НОВЫЙ ДРОП — SS26</span>
+    <span>★ ЛИМИТИРОВАННЫЙ ТИРАЖ</span>
+    <span>★ ДОСТАВКА ПО ВСЕЙ УКРАИНЕ</span>
+    <span>★ БЕЗ ЦВЕТА. ТОЛЬКО ФОРМА.</span>
+  </div>
+</div>
+
+<header>
+  <nav class="nav">
+    <div class="logo">koch<span>/</span>BRATAN</div>
+    <ul class="nav__links">
+      <li><a href="#catalog">Каталог</a></li>
+      <li><a href="#story">О бренде</a></li>
+      <li><a href="#drops">Дропы</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+    <div class="nav__right">
+      <button class="cart-btn" id="cartOpenBtn" aria-haspopup="dialog">
+        Корзина <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero__eyebrow">Street collection / чёрно-белый выпуск</div>
+  <h1 class="hero__title">УЛИЦА<br>ДИКТУЕТ<br><span class="outline">ФОРМУ</span></h1>
+  <div class="hero__row">
+    <p class="hero__desc">Одежда без полутонов. Тяжёлый хлопок, крупный крой, графика на грани контраста. Только чёрный. Только белый. Только то, что реально носят.</p>
+    <a href="#catalog" class="hero__cta">Смотреть каталог →</a>
+  </div>
+  <div class="hero__strip">
+    <div>Плотность ткани<b>340 г/м²</b></div>
+    <div>Активный дроп<b>SS / 26</b></div>
+    <div>Тираж модели<b>200 шт</b></div>
+    <div>Доставка<b>1–3 дня</b></div>
+  </div>
+</section>
+
+<div class="marquee marquee--dark">
+  <div class="marquee__track" style="animation-direction:reverse;">
+    <span>HOODIES</span><span>—</span><span>TEES</span><span>—</span><span>CARGO</span><span>—</span><span>OUTERWEAR</span><span>—</span>
+    <span>HOODIES</span><span>—</span><span>TEES</span><span>—</span><span>CARGO</span><span>—</span><span>OUTERWEAR</span><span>—</span>
+  </div>
+</div>
+
+<section class="section" id="catalog">
+  <div class="section__head">
+    <h2 class="section__title">Каталог</h2>
+    <p class="section__sub">Каждая вещь — часть одной палитры. Наведи курсор — цвет карточки инвертируется, как и всё, во что мы верим.</p>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-cat="all">Все</button>
+    <button class="filter-btn" data-cat="hoodie">Худи</button>
+    <button class="filter-btn" data-cat="tee">Футболки</button>
+    <button class="filter-btn" data-cat="outerwear">Верхняя одежда</button>
+    <button class="filter-btn" data-cat="pants">Брюки</button>
+    <button class="filter-btn" data-cat="acc">Аксессуары</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="section" id="story">
+  <div class="story">
+    <div class="story__visual"></div>
+    <div>
+      <p class="story__quote">«Мы не продаём цвет. Мы продаём то, что остаётся, когда его убрать»</p>
+      <p class="body-text">kochBRATAN родился на бетоне, а не на подиуме. Каждая вещь проходит один и тот же тест: работает ли крой без единого цвета, кроме чёрного и белого. Если да — она попадает в дроп. Если нет — остаётся эскизом.</p>
+      <div class="story__signature"><b>Основано в 2019</b>Независимый бренд · собственное производство</div>
+    </div>
+  </div>
+</section>
+
+<section class="news" id="drops">
+  <div class="news__inner">
+    <h3 class="news__title">Узнавай о дропах первым</h3>
+    <div>
+      <form class="news__form" id="newsForm">
+        <input type="email" placeholder="your@email.com" required>
+        <button type="submit">Подписаться</button>
+      </form>
+      <p class="news__note">Никакого спама. Только даты дропов и ранний доступ.</p>
+    </div>
+  </div>
+</section>
+
+<footer id="contacts">
+  <div class="foot__grid">
+    <div>
+      <div class="foot__logo">koch<span style="color:var(--g3)">/</span>BRATAN</div>
+      <p class="foot__desc">Уличная одежда в чёрно-белой палитре. Киев — и далее по всей Украине.</p>
+    </div>
+    <div>
+      <div class="foot__head">Магазин</div>
+      <ul class="foot__links">
+        <li><a href="#catalog">Каталог</a></li>
+        <li><a href="#drops">Дропы</a></li>
+        <li><a href="#">Размерная сетка</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot__head">Бренд</div>
+      <ul class="foot__links">
+        <li><a href="#story">О нас</a></li>
+        <li><a href="#">Лукбук</a></li>
+        <li><a href="#">Вакансии</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="foot__head">Контакты</div>
+      <ul class="foot__links">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Telegram</a></li>
+        <li><a href="#">hello@kochbratan.ua</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot__bottom">
+    <span>© 2026 kochBRATAN. Все права защищены.</span>
+    <span>Сделано на бетоне, не в офисе.</span>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer" role="dialog" aria-label="Корзина">
+  <div class="drawer__head">
+    <span>Корзина</span>
+    <button class="drawer__close" id="drawerClose" aria-label="Закрыть">×</button>
+  </div>
+  <div class="drawer__items" id="drawerItems"></div>
+  <div class="drawer__foot">
+    <div class="drawer__total"><span>Итого</span><span id="drawerTotal">0 ₴</span></div>
+    <button class="drawer__checkout" id="checkoutBtn">Оформить заказ</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
